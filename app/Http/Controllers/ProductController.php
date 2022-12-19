@@ -5,28 +5,31 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Unit;
 
 class ProductController extends Controller
 {
     public function index () {
         $products = Product::get();
 
-        return view('listProduct', ['products' => $products]);
+        return view('produk.listProduct', ['products' => $products]);
     }
 
     public function tampilFormTambah () {
         $categories = Category::get();
+        $units = Unit::get();
 
-        return view('formTambahProduk', ['categories' => $categories]);
+        return view('produk.formTambahProduct', ['categories' => $categories, 'units' => $units]);
     }
 
     public function store (Request $r) {
         $validated = $r->validate([
             'productName' => 'required',
             'productPrice' => 'required',
-            'productModel' => 'required',
+            'productModal' => 'required',
             'category_id' => 'required',
-            'inStock' => 'required'
+            'inStock' => 'required',
+            'unit_id' => 'required'
         ]);
 
         $product = Product::create($validated);
@@ -37,8 +40,9 @@ class ProductController extends Controller
     public function tampilFormEdit($id) {
         $product = Product::where('id',$id)->first();
         $categories = Category::get();
+        $units = Unit::get();
 
-        return view('formEditProduk', ['product' => $product, 'categories' => $categories]);
+        return view('produk.formEditProduk', ['product' => $product, 'categories' => $categories, 'units' => $units]);
     }
 
     public function patch(Request $r, $id) {

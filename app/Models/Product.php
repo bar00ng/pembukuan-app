@@ -12,13 +12,18 @@ class Product extends Model
     protected $fillable = [
         'productName',
         'productPrice',
-        'productModel',
+        'productModal',
         'category_id',
+        'unit_id',
         'inStock',
         'isActive'
     ];
 
     public function category(){
         return $this->belongsTo(Category::class);
+    }
+    
+    public function unit(){
+        return $this->belongsTo(Unit::class);
     }
 }

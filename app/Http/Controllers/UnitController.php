@@ -3,23 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use app\Models\Unit;
+use App\Models\Unit;
 
 class UnitController extends Controller
 {
     public function index() {
         $units = Unit::get();
 
-        return view('listUnit', ['units' => $unit]);
+        return view('unit.listUnit', ['units' => $units]);
     }
 
     public function formTambahUnit() {
-        return view('formTambahUnit');
+        return view('unit.formTambahUnit');
     }
 
     public function store(Request $r) {
         $validated = $r->validate([
-            'categoryName' => 'required'
+            'unitName' => 'required'
         ]);
 
         $unit = Unit::create($validated);
@@ -30,15 +30,15 @@ class UnitController extends Controller
     public function formEditUnit($id) {
         $unit = Unit::where('id',$id)->first();
 
-        return view('formEditUnit', ['unit' => $unit]);
+        return view('unit.formEditUnit', ['unit' => $unit]);
     }
 
     public function patch(Request $r, $id) {
         $validated = $r->validate([
-            'categoryName' => 'required'
+            'unitName' => 'required'
         ]);
 
-        $product = Unit::where('id',$id)->update($validated);
+        $unit = Unit::where('id',$id)->update($validated);
 
         return redirect('/unit')->with('Message', 'Berhasil diedit');
     }
@@ -46,6 +46,6 @@ class UnitController extends Controller
     public function delete($id) {
         Unit::where('id',$id)->delete();
 
-        return redirect('/product')->with('Message', 'Berhasil dihapus');
+        return redirect('/unit')->with('Message', 'Berhasil dihapus');
     }
 }
