@@ -13,10 +13,6 @@ class UnitController extends Controller
         return view('unit.listUnit', ['units' => $units]);
     }
 
-    public function formTambahUnit() {
-        return view('unit.formTambahUnit');
-    }
-
     public function store(Request $r) {
         $validated = $r->validate([
             'unitName' => 'required'
@@ -25,12 +21,6 @@ class UnitController extends Controller
         $unit = Unit::create($validated);
 
         return redirect('/unit')->with('Message','Berhasil ditambahkan');
-    }
-
-    public function formEditUnit($id) {
-        $unit = Unit::where('id',$id)->first();
-
-        return view('unit.formEditUnit', ['unit' => $unit]);
     }
 
     public function patch(Request $r, $id) {

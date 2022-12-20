@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('productName');
             $table->integer('productPrice');
-            $table->integer('productModal');
+            $table->integer('productModal')->default(0);
             $table->foreignId('category_id');
             $table->integer('inStock');
             $table->foreignId('unit_id');

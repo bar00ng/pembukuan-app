@@ -26,11 +26,14 @@ class ProductController extends Controller
         $validated = $r->validate([
             'productName' => 'required',
             'productPrice' => 'required',
-            'productModal' => 'required',
             'category_id' => 'required',
             'inStock' => 'required',
             'unit_id' => 'required'
         ]);
+
+        if (!empty($r->input('productModal'))) {
+            $validated['productModal'] = $r->productModal;
+        }
 
         $product = Product::create($validated);
 
@@ -49,10 +52,14 @@ class ProductController extends Controller
         $validated = $r->validate([
             'productName' => 'required',
             'productPrice' => 'required',
-            'productModel' => 'required',
             'category_id' => 'required',
-            'inStock' => 'required'
+            'inStock' => 'required',
+            'unit_id' => 'required'
         ]);
+
+        if (!empty($r->input('productModal'))) {
+            $validated['productModal'] = $r->productModal;
+        }
 
         $product = Product::where('id',$id)->update($validated);
 

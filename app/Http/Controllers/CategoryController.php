@@ -13,10 +13,6 @@ class CategoryController extends Controller
         return view('kategori.listKategori', ['categories' => $categories]);
     }
 
-    public function formTambahCategory() {
-        return view('kategori.formTambahKategori');
-    }
-
     public function store(Request $r) {
         $validated = $r->validate([
             'categoryName' => 'required',
@@ -25,12 +21,6 @@ class CategoryController extends Controller
         $product = Category::create($validated);
 
         return redirect('/category')->with('Message', 'Berhasil ditambahkan');
-    }
-
-    public function formEditCategory($id) {
-        $category = Category::where('id', $id)->first();
-
-        return view('kategori.formEditKategori', ['category' => $category]);
     }
 
     public function patch(Request $r, $id) {
