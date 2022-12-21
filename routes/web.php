@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\IncomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,5 +48,7 @@ Route::get('/category',[CategoryController::class, 'index'])->name('category.lis
 Route::post('/category',[CategoryController::class, 'store'])->name('category.store');
 Route::patch('/category/{id}',[CategoryController::class, 'patch'])->name('category.patch');
 Route::delete('/category/{id}',[CategoryController::class, 'delete'])->name('category.delete');
+
+Route::get('/income',[IncomeController::class, 'index'])->name('income');
 
 require __DIR__.'/auth.php';
