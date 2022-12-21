@@ -53,6 +53,7 @@ Route::delete('/category/{id}',[CategoryController::class, 'delete'])->name('cat
 Route::get('/income',[IncomeController::class, 'index'])->name('income');
 Route::get('/addBarang/{id}',[DaftarBarangController::class,'addToDaftarBarang'])->name('addBarang');
 Route::delete('/deleteBarang',[DaftarBarangController::class, 'remove'])->name('removeBarang');
+Route::patch('/editBarang', [DaftarBarangController::class, 'update'])->name('editBarang');
 Route::post('/income',[IncomeController::class, 'store'])->name('income.store');
 
 require __DIR__.'/auth.php';

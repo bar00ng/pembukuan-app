@@ -114,7 +114,9 @@
                                                     {{ $details['name'] }}
                                                 </th>
                                                 <td class="py-4 px-6">
-                                                    {{ $details['quantity'] }}
+                                                    <input type="number"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 update-barang quantity"
+                                                        value={{ $details['quantity'] }}>
                                                 </td>
                                                 <td class="py-4 px-6">
                                                     {{ number_format($details['price'] * $details['quantity']) }}
@@ -143,7 +145,7 @@
                         </div>
 
                     </div>
-                    <form action={{route('income.store')}} method="POST">
+                    <form action={{ route('income.store') }} method="POST">
                         @csrf
                         <div class="mb-6">
                             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total
@@ -153,7 +155,7 @@
                                     class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 rounded-l-md border border-r-0 border-gray-300 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
                                     Rp
                                 </span>
-                                <input type="number" name="totalPemasukan"
+                                <input type="number" name="totalPemasukan" id="total-pemasukan"
                                     class="rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="0" value={{ session('cart') ? $total : 0 }}>
                             </div>
@@ -166,7 +168,7 @@
                                     class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 rounded-l-md border border-r-0 border-gray-300 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
                                     Rp
                                 </span>
-                                <input type="number" name="hargaModal"
+                                <input type="number" name="hargaModal" id="harga-modal"
                                     class="rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="0" value={{ session('cart') ? $modal : 0 }}>
                             </div>
@@ -179,7 +181,7 @@
                                     class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 rounded-l-md border border-r-0 border-gray-300 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
                                     Rp
                                 </span>
-                                <input type="number" name="keuntungan"
+                                <input type="number" name="keuntungan" id="keuntungan"
                                     class="rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="0" value={{ session('cart') ? $keuntungan : 0 }} readonly>
                             </div>
@@ -189,7 +191,7 @@
                                 Modal</label>
                             <div class="flex">
                                 <div class="flex items-center mr-4">
-                                    <input type="radio" name="status" value="true"
+                                    <input type="radio" name="status" value=1
                                         class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
                                         checked>
                                     <label class="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
@@ -198,7 +200,7 @@
                                 </div>
 
                                 <div class="flex items-center">
-                                    <input type="radio" name="status" value="false"
+                                    <input type="radio" name="status" value=0
                                         class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600">
                                     <label class="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                                         Tidak Lunas
@@ -222,6 +224,14 @@
 
     <x-slot name="script">
         <script>
+            function hitungKeuntungan() {
+                var pendapatan = $('#total-pemasukan').val();
+                var modal = $('#harga-modal').val();
+                var keuntungan = pendapatan - modal;
+
+                $('#keuntungan').val(keuntungan);
+            }
+
             $(".remove-barang").click(function(e) {
                 e.preventDefault();
                 var ele = $(this);
@@ -238,6 +248,35 @@
                         }
                     });
                 }
+            });
+
+            $(".update-barang").change(function(e) {
+                e.preventDefault();
+                var ele = $(this);
+                $.ajax({
+                    url: '{{ route('editBarang') }}',
+                    method: "patch",
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: ele.parents("tr").attr("data-id"),
+                        quantity: ele.parents("tr").find(".quantity").val()
+                    },
+                    success: function(response) {
+                        window.location.reload();
+                    }
+                });
+            });
+
+            $('#total-pemasukan').change(function(e) {
+                e.preventDefault();
+
+                hitungKeuntungan();
+            });
+
+            $('#harga-modal').change(function(e) {
+                e.preventDefault();
+
+                hitungKeuntungan();
             });
         </script>
     </x-slot>

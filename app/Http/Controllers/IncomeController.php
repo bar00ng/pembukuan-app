@@ -22,13 +22,15 @@ class IncomeController extends Controller
             'hargaModal' => 'required',
             'keuntungan' => 'required',
         ]);
+        if (!empty($r->input('description'))) {
+            $validated['description'] = $r->description;
+        }
+        $validated['details'] = $cart;
+        $validated['status'] = $r->status;
 
-        Income::create([
-            'details' => $cart,
-            'totalPemasukan' => $r->totalPemasukan,
-            'hargaModal' => $r->hargaModal,
-            'keuntungan' => $r->keuntungan,
-        ]);
+        Income::create($validated);
+
+       
 
         $r->session()->forget('cart');
         return redirect('')->with('Message', 'Berhasil dimasukkan');
