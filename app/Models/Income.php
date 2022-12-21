@@ -17,4 +17,8 @@ class Income extends Model
         'details',
         'description'
     ];
+
+    protected $casts = [
+        'details' => 'array'
+    ];  
 }

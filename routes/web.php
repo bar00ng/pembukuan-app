@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\IncomeController;
+use App\Http\Controllers\DaftarBarangController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,5 +51,8 @@ Route::patch('/category/{id}',[CategoryController::class, 'patch'])->name('categ
 Route::delete('/category/{id}',[CategoryController::class, 'delete'])->name('category.delete');
 
 Route::get('/income',[IncomeController::class, 'index'])->name('income');
+Route::get('/addBarang/{id}',[DaftarBarangController::class,'addToDaftarBarang'])->name('addBarang');
+Route::delete('/deleteBarang',[DaftarBarangController::class, 'remove'])->name('removeBarang');
+Route::post('/income',[IncomeController::class, 'store'])->name('income.store');
 
 require __DIR__.'/auth.php';
