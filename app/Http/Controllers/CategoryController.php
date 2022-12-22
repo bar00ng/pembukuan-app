@@ -10,7 +10,7 @@ class CategoryController extends Controller
     public function index() {
         $categories = Category::get();
 
-        return view('kategori.listKategori', ['categories' => $categories]);
+        return view('listKategori', ['categories' => $categories]);
     }
 
     public function store(Request $r) {

@@ -50,7 +50,10 @@ Route::post('/category',[CategoryController::class, 'store'])->name('category.st
 Route::patch('/category/{id}',[CategoryController::class, 'patch'])->name('category.patch');
 Route::delete('/category/{id}',[CategoryController::class, 'delete'])->name('category.delete');
 
-Route::get('/income',[IncomeController::class, 'index'])->name('income');
+Route::get('/income',[IncomeController::class, 'index'])->name('income.list');
+Route::get('/income/{id}',[IncomeController::class,'formEditPemasukan'])->name('income.form.edit');
+Route::delete('/income/{id}',[IncomeController::class, 'delete'])->name('income.delete');
+Route::get('/incomeAddForm',[IncomeController::class, 'formAddPemasukan'])->name('income.form.tambah');
 Route::get('/addBarang/{id}',[DaftarBarangController::class,'addToDaftarBarang'])->name('addBarang');
 Route::delete('/deleteBarang',[DaftarBarangController::class, 'remove'])->name('removeBarang');
 Route::patch('/editBarang', [DaftarBarangController::class, 'update'])->name('editBarang');

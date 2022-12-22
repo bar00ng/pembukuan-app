@@ -140,10 +140,10 @@
                                             {{ $product['productName'] }}
                                         </td>
                                         <td class="py-4 px-6">
-                                            {{ number_format($product['productPrice']) }}
+                                            {{ 'Rp. '.number_format($product['productPrice']) }}
                                         </td>
                                         <td class="py-4 px-6">
-                                            {{ number_format($product['productModal']) }}
+                                            {{ 'Rp. '.number_format($product['productModal']) }}
                                         </td>
                                         <td class="py-4 px-6">
                                             {{ $product->category->categoryName }}

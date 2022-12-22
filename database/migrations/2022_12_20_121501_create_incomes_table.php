@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('incomes', function (Blueprint $table) {
             $table->id();
-            $table->json('details');
+            $table->json('details')->default('{}');
             $table->integer('totalPemasukan');
             $table->integer('hargaModal');
             $table->integer('keuntungan');

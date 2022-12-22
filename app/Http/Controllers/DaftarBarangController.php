@@ -24,7 +24,7 @@ class DaftarBarangController extends Controller
         }
 
         session()->put('cart',$cart);
-        return redirect('/income')->with('Message', 'Berhasil dimasukkan ke Cart');
+        return redirect('/incomeAddForm')->with('Message', 'Berhasil dimasukkan ke Cart');
     }
 
     public function update(Request $r) {

@@ -10,7 +10,7 @@ class UnitController extends Controller
     public function index() {
         $units = Unit::get();
 
-        return view('unit.listUnit', ['units' => $units]);
+        return view('listUnit', ['units' => $units]);
     }
 
     public function store(Request $r) {

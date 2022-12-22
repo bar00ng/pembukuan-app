@@ -119,7 +119,7 @@
                                                         value={{ $details['quantity'] }}>
                                                 </td>
                                                 <td class="py-4 px-6">
-                                                    {{ number_format($details['price'] * $details['quantity']) }}
+                                                    {{ 'Rp. '.number_format($details['price'] * $details['quantity']) }}
                                                 </td>
                                                 <td>
                                                     <button
