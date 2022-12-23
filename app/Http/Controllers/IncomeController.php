@@ -51,16 +51,40 @@ class IncomeController extends Controller
         $products = Product::get();
         $income = Income::where('id',$id)->first();
 
-        $cart = session()->get('cart',[]);
+        if (!session('daftarBarang')) {
+            $cart = session()->get('daftarBarang',[]);
 
-        $cart = $income['details']; 
+            $cart = $income['details'];
 
-        dump($cart);
+            session()->put('daftarBarang', $cart);
+        }
         
         return view('pemasukan.formEditPemasukan',[
             'income' => $income,
             'products' => $products
         ]);
+    }
+
+    public function patch(Request $r, $id){
+        $cart = session()->get('daftarBarang');
+       
+        $validated = $r->validate([
+            'totalPemasukan' => 'required',
+            'hargaModal' => 'required',
+            'keuntungan' => 'required',
+        ]);
+        if (!empty($r->input('description'))) {
+            $validated['description'] = $r->description;
+        }
+        if (session('cart')) {
+            $validated['details'] = $cart;
+        }
+        $validated['status'] = $r->status;
+
+        Income::where('id',$id)->update($validated);
+
+        $r->session()->forget('daftarBarang');
+        return redirect('/income')->with('Message', 'Berhasil diedit');
     }
 
     public function delete($id) {

@@ -53,9 +53,9 @@
                                         {{ $product['productName'] }}
                                     </th>
                                     <td class="py-2 px-4 text-right">
-                                        <a href={{ route('addBarang', ['id' => $product['id']]) }}>
+                                        <a href={{ route('income.edit.addBarang',['id' => $product['id']]) }}>
                                             <button type="button"
-                                                class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2  dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Add</button>
+                                                class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2  dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 tambah-barang">Add</button>
                                         </a>
                                     </td>
                                 </tr>
@@ -101,8 +101,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (session('cart'))
-                                        @foreach (session('cart') as $id => $details)
+                                    @if (session('daftarBarang'))
+
+                                        @foreach (session('daftarBarang') as $id => $details)
                                             @php
                                                 $total += $details['price'] * $details['quantity'];
                                                 $modal += $details['modal'] * $details['quantity'];
@@ -145,7 +146,8 @@
                         </div>
 
                     </div>
-                    <form action={{ route('income.store') }} method="POST">
+                    <form action={{ route('income.patch',['id'=>$income['id']]) }} method="POST">
+                        @method('patch')
                         @csrf
                         <div class="mb-6">
                             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total
@@ -157,7 +159,7 @@
                                 </span>
                                 <input type="number" name="totalPemasukan" id="total-pemasukan"
                                     class="rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="0" value={{ session('cart') ? $total : $income['totalPemasukan'] }}>
+                                    placeholder="0" value={{ session('daftarBarang') ? $total : $income['totalPemasukan'] }}>
                             </div>
                         </div>
                         <div class="mb-6">
@@ -170,7 +172,7 @@
                                 </span>
                                 <input type="number" name="hargaModal" id="harga-modal"
                                     class="rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="0" value={{ session('cart') ? $modal : $income['hargaModal'] }}>
+                                    placeholder="0" value={{ session('daftarBarang') ? $modal : $income['hargaModal'] }}>
                             </div>
                         </div>
                         <div class="mb-6">
@@ -183,7 +185,7 @@
                                 </span>
                                 <input type="number" name="keuntungan" id="keuntungan"
                                     class="rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="0" value={{ session('cart') ? $keuntungan : $income['keuntungan'] }} readonly>
+                                    placeholder="0" value={{ session('daftarBarang') ? $keuntungan : $income['keuntungan'] }} readonly>
                             </div>
                         </div>
                         <div class="mb-10">
@@ -238,7 +240,7 @@
                 var ele = $(this);
                 if (confirm("Yakin ingin menghapus item?")) {
                     $.ajax({
-                        url: '{{ route('removeBarang') }}',
+                        url: '{{ route('income.edit.removeBarang') }}',
                         method: "DELETE",
                         data: {
                             _token: '{{ csrf_token() }}',
@@ -255,7 +257,7 @@
                 e.preventDefault();
                 var ele = $(this);
                 $.ajax({
-                    url: '{{ route('editBarang') }}',
+                    url: '{{ route('income.edit.patchBarang') }}',
                     method: "patch",
                     data: {
                         _token: '{{ csrf_token() }}',
