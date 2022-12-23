@@ -6,8 +6,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\IncomeController;
+use App\Http\Controllers\OutcomeController;
 use App\Http\Controllers\DaftarBarangController;
-use App\Http\Controllers\DaftarBarangEditController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -55,15 +55,31 @@ Route::delete('/category/{id}',[CategoryController::class, 'delete'])->name('cat
 Route::get('/income',[IncomeController::class, 'index'])->name('income.list');
 Route::delete('/income/{id}',[IncomeController::class, 'delete'])->name('income.delete');
 Route::get('/incomeAddForm',[IncomeController::class, 'formAddPemasukan'])->name('income.form.tambah');
-Route::get('/addBarang/{id}',[DaftarBarangController::class,'addToDaftarBarang'])->name('addBarang');
-Route::delete('/deleteBarang',[DaftarBarangController::class, 'remove'])->name('removeBarang');
-Route::patch('/editBarang', [DaftarBarangController::class, 'update'])->name('editBarang');
 Route::post('/income',[IncomeController::class, 'store'])->name('income.store');
-
 Route::get('/income/{id}',[IncomeController::class,'formEditPemasukan'])->name('income.form.edit');
-Route::get('/addDaftarBarang/{id}', [DaftarBarangEditController::class, 'addToDaftarBarang'])->name('income.edit.addBarang');
-Route::delete('/deleteDaftarBarang',[DaftarBarangEditController::class, 'removeFromDaftarBarang'])->name('income.edit.removeBarang');
-Route::patch('/editDaftarBarang', [DaftarBarangEditController::class, 'updateFromDaftarBarang'])->name('income.edit.patchBarang');
 Route::patch('/income/{id}', [IncomeController::class, 'patch'])->name('income.patch');
+
+Route::get('/outcome',[OutcomeController::class, 'index'])->name('outcome.list');
+Route::delete('/outcome/{id}',[OutcomeController::class, 'delete'])->name('outcome.delete');
+Route::get('/outcomeAddForm',[OutcomeController::class, 'formAddPengeluaran'])->name('outcome.form.tambah');
+Route::post('/outcome',[OutcomeController::class, 'store'])->name('outcome.store');
+Route::get('/outcome/{id}',[OutcomeController::class,'formEditPengeluaran'])->name('outcome.form.edit');
+Route::patch('/outcome/{id}', [OutcomeController::class, 'patch'])->name('outcome.patch');
+
+Route::get('/addBarang/{id}',[DaftarBarangController::class,'addToFormTambahPemasukan'])->name('addBarang');
+Route::delete('/deleteBarang',[DaftarBarangController::class, 'removeFromFormTambahPemasukan'])->name('removeBarang');
+Route::patch('/editBarang', [DaftarBarangController::class, 'updateFromFormTambahPemasukan'])->name('editBarang');
+
+Route::get('/outcomeAddBarang/{id}',[DaftarBarangController::class,'addToFormTambahPengeluaran'])->name('outcomeAddBarang');
+Route::delete('/outcomeDeleteBarang',[DaftarBarangController::class, 'removeFromFormTambahPengeluaran'])->name('outcomeRemoveBarang');
+Route::patch('/outcomeEditBarang', [DaftarBarangController::class, 'updateFromFormTambahPengeluaran'])->name('outcomeEditBarang');
+
+Route::get('/addDaftarBarang/{id}', [DaftarBarangController::class, 'addToFormEditPemasukan'])->name('income.edit.addBarang');
+Route::delete('/deleteDaftarBarang',[DaftarBarangController::class, 'removeFromFormEditPemasukan'])->name('income.edit.removeBarang');
+Route::patch('/editDaftarBarang', [DaftarBarangController::class, 'updateFromFormEditPemasukan'])->name('income.edit.patchBarang');
+
+Route::get('/outcomeAddDaftarBarang/{id}', [DaftarBarangController::class, 'addToFormEditPengeluaran'])->name('outcome.edit.addBarang');
+Route::delete('/outcomeDeleteDaftarBarang',[DaftarBarangController::class, 'removeFromFormEditPengeluaran'])->name('outcome.edit.removeBarang');
+Route::patch('/outcomeEditDaftarBarang', [DaftarBarangController::class, 'updateFromFormEditPengeluaran'])->name('outcome.edit.patchBarang');
 
 require __DIR__.'/auth.php';

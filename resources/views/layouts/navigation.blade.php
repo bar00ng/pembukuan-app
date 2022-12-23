@@ -27,6 +27,9 @@
                     <x-nav-link :href="route('income.list')" :active="request()->routeIs('*income*')">
                         {{ __('Pemasukan') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('outcome.list')" :active="request()->routeIs('*outcome*')">
+                        {{ __('Pengeluaran') }}
+                    </x-nav-link>
                 </div>
             </div>
 

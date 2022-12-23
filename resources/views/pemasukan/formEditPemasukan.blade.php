@@ -189,8 +189,7 @@
                             </div>
                         </div>
                         <div class="mb-10">
-                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Harga
-                                Modal</label>
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
                             <div class="flex">
                                 <div class="flex items-center mr-4">
                                     <input type="radio" name="status" value=1

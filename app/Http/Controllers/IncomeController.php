@@ -10,7 +10,7 @@ use Carbon\Carbon;
 class IncomeController extends Controller
 {
     public function index() {
-        $incomes = Income::orderBy('created_at')
+        $incomes = Income::orderBy('created_at','DESC')
                     ->get()
                     ->groupBy(function ($val){
                         return Carbon::parse($val->created_at)->format('d M Y');
