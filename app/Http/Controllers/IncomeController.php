@@ -4,19 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
-use App\Models\Income;
+use App\Models\Entry;
 use Carbon\Carbon;
 
 class IncomeController extends Controller
 {
     public function index() {
-        $incomes = Income::orderBy('created_at','DESC')
+        $data = Entry::orderBy('created_at','DESC')
                     ->get()
                     ->groupBy(function ($val){
                         return Carbon::parse($val->created_at)->format('d M Y');
                     });
-        
-        return view('pemasukan.listPemasukan', compact('incomes'));
+
+        return view('pemasukan.listPemasukan', compact('data'));
     }
 
     public function formAddPemasukan(){
@@ -40,16 +40,17 @@ class IncomeController extends Controller
             $validated['details'] = $cart;
         }
         $validated['status'] = $r->status;
+        $validated['isPemasukan'] = 1;
 
-        Income::create($validated);
+        Entry::create($validated);
 
-        $r->session()->forget('cart');
+        session()->forget('cart');
         return redirect('/income')->with('Message', 'Berhasil dimasukkan');
     }
 
     public function formEditPemasukan($id) {
         $products = Product::get();
-        $income = Income::where('id',$id)->first();
+        $income = Entry::where('id',$id)->first();
 
         if (!session('daftarBarang')) {
             $cart = session()->get('daftarBarang',[]);
@@ -81,14 +82,14 @@ class IncomeController extends Controller
         }
         $validated['status'] = $r->status;
 
-        Income::where('id',$id)->update($validated);
+        Entry::where('id',$id)->update($validated);
 
-        $r->session()->forget('daftarBarang');
+        session()->forget('daftarBarang');
         return redirect('/income')->with('Message', 'Berhasil diedit');
     }
 
     public function delete($id) {
-        Income::where('id',$id)->delete();
+        Entry::where('id',$id)->delete();
 
         return redirect('/income')->with('Message', 'Berhasil dihapus');
     }
