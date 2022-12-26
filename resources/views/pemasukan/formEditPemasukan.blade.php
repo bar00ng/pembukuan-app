@@ -108,6 +108,7 @@
                                                 $total += $details['price'] * $details['quantity'];
                                                 $modal += $details['modal'] * $details['quantity'];
                                                 $keuntungan = $total - $modal;
+                                                print_r($details)
                                             @endphp
                                             <tr class="bg-white dark:bg-gray-800" data-id={{ $id }}>
                                                 <th scope="row"

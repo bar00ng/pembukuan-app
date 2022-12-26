@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -13,10 +14,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('outcomes', function (Blueprint $table) {
+        Schema::create('entries', function (Blueprint $table) {
             $table->id();
             $table->json('details')->default('{}');
-            $table->integer('totalPengeluaran');
+            $table->integer('totalPemasukan');
+            $table->integer('hargaModal');
+            $table->integer('keuntungan');
+            $table->boolean('isPemasukan'); // 1 == PEMASUKAN | 2 == PENGELUARAN
             $table->boolean('status')->default(1); // 1 == LUNAS | 0 == TIDAK LUNAS
             $table->text('description')->default('');
             $table->timestamps();
@@ -30,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('outcomes');
+        Schema::dropIfExists('entries');
     }
 };

@@ -4,26 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
-use App\Models\Outcome;
+use App\Models\Entry;
 use Carbon\Carbon;
 
 class OutcomeController extends Controller
 {
-    public function index() {
-        $outcomes = Outcome::orderBy('created_at','DESC')
-                    ->get()
-                    ->groupBy(function ($val){
-                        return Carbon::parse($val->created_at)->format('d M Y');
-                    });
-        
-        return view('pengeluaran.listPengeluaran', compact('outcomes'));
-    }
-
     public function store(Request $r) {
         $cart = session()->get('daftarPengeluaran');
        
         $validated = $r->validate([
-            'totalPengeluaran' => 'required',
+            'hargaModal' => 'required',
         ]);
         if (!empty($r->input('description'))) {
             $validated['description'] = $r->description;
@@ -32,17 +22,20 @@ class OutcomeController extends Controller
             $validated['details'] = $cart;
         }
         $validated['status'] = $r->status;
+        $validated['isPemasukan'] = 0;
+        $validated['totalPemasukan'] = 0;
+        $validated['keuntungan'] = 0;
 
-        Outcome::create($validated);
+        Entry::create($validated);
 
-        $r->session()->forget('daftarPengeluaran');
-        return redirect('/outcome')->with('Message', 'Berhasil dimasukkan');
+        session()->forget('daftarPengeluaran');
+        return redirect('/income')->with('Message', 'Berhasil dimasukkan');
     }
 
     public function delete($id) {
-        Outcome::where('id',$id)->delete();
+        Entry::where('id',$id)->delete();
 
-        return redirect('/outcome')->with('Message', 'Berhasil dihapus');
+        return redirect('/income')->with('Message', 'Berhasil dihapus');
     }
 
     public function patch(Request $r, $id) {
@@ -73,7 +66,7 @@ class OutcomeController extends Controller
 
     public function formEditPengeluaran($id) {
         $products = Product::get();
-        $outcome = Outcome::where('id',$id)->first();
+        $outcome = Entry::where('id',$id)->first();
 
         if (!session('editDaftarPengeluaran')) {
             $cart = session()->get('editDaftarPengeluaran',[]);
