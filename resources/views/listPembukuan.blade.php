@@ -95,6 +95,10 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
+                    <div class="h-1/2 mb-6">
+                    {!! $chart->container() !!}
+                        
+                    </div>
 
                     <div class="overflow-x-auto relative sm:rounded-lg">
                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -161,9 +165,10 @@
                             </tbody>
                         </table>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
+
+    {!! $chart->script() !!}
 </x-app-layout>
