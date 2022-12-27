@@ -131,12 +131,28 @@
                                                 class="py-4 px-6 text-gray-700 bg-gray-50 uppercase tracking-wide font-semibold">
                                                 {{ $day }}
                                             </td>
+                                            <td colspan="10"
+                                                class="py-4 px-6 text-gray-700 bg-gray-50 uppercase tracking-wide font-semibold">
+                                                Keuntungan
+                                            </td>
                                         </tr>
                                         @foreach ($data_list as $d)
                                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                                 <th scope="row"
                                                     class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                    {{ $d->description }}
+                                                    <div class="flex flex-col space-y-1">
+                                                        @if ($d->description > 1)
+                                                            <p>{{$d->description}}</p>    
+                                                        @else
+                                                            <p>-</p>
+                                                        @endif
+                                                        
+                                                        @if ($d->isPemasukan > 0)
+                                                            <p class="font-light text-green-700">Pemasukan</p>
+                                                        @else
+                                                            <p class="font-light text-red-700">Pengeluaran</p>
+                                                        @endif
+                                                    </div>
                                                 </th>
                                                 <td class="py-4 px-6 font-bold text-green-500">
                                                     {{ 'Rp. ' . number_format($d->totalPemasukan) }}

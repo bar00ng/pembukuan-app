@@ -146,8 +146,7 @@
                         @method('patch')
                         @csrf
                         <div class="mb-6">
-                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total
-                                Pemasukan</label>
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total Pengeluaran</label>
                             <div class="flex">
                                 <span
                                     class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 rounded-l-md border border-r-0 border-gray-300 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">

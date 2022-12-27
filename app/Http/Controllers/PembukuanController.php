@@ -29,21 +29,15 @@ class PembukuanController extends Controller
 
         foreach($pembukuan as $month => $values){
             $months[] = $month;
-            foreach($values as $d){
-                $val_pemasukan = 0;
-                $val_pengeluaran = 0;
-                $val_pemasukan += $d['totalPemasukan'];
-                $val_pengeluaran += $d['hargaModal'];
-            }
-            $pemasukan[] = $val_pemasukan;
-            $pengeluaran[] = $val_pengeluaran;
+            $pemasukan[] = $values->sum('totalPemasukan');
+            $pengeluaran[] = $values->sum('hargaModal');
         }
 
         $chart = new Pembukuan;
 
         $chart->labels($months);
-        $chart->dataset('Pemasukan', 'bar', $pemasukan)->backgroundColor('#046c4e');
-        $chart->dataset('Pengeluaran', 'bar', $pengeluaran)->backgroundColor('#c81e1e');
+        $chart->dataset('Pemasukan', 'line', $pemasukan)->color('#046c4e');
+        $chart->dataset('Pengeluaran', 'line', $pengeluaran)->color('#c81e1e');
         
         return view('listPembukuan',[
             'data' => $data,
@@ -75,6 +69,7 @@ class PembukuanController extends Controller
 
     public function formEditPemasukan($id) {
         $data = Entry::where('id', $id)->first();
+
         $products = Product::get();
 
         return view('pemasukan.formEditPemasukan', [
@@ -87,7 +82,7 @@ class PembukuanController extends Controller
         $data = Entry::where('id', $id)->first();
         $products = Product::get();
 
-        return view('pengeluaran.formTambahPengeluaran', [
+        return view('pengeluaran.formEditPengeluaran', [
             'data' => $data,
             'products' => $products
         ]);
