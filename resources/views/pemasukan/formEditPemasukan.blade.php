@@ -53,7 +53,7 @@
                                         {{ $product['productName'] }}
                                     </th>
                                     <td class="py-2 px-4 text-right">
-                                        <a href={{ route('income.edit.addBarang',['id' => $product['id']]) }}>
+                                        <a href={{ route('addBarang',['id'=>$product->id, 'sessionName' => 'daftarBarang']) }}>
                                             <button type="button"
                                                 class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2  dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 tambah-barang">Add</button>
                                         </a>
@@ -108,7 +108,6 @@
                                                 $total += $details['price'] * $details['quantity'];
                                                 $modal += $details['modal'] * $details['quantity'];
                                                 $keuntungan = $total - $modal;
-                                                print_r($details)
                                             @endphp
                                             <tr class="bg-white dark:bg-gray-800" data-id={{ $id }}>
                                                 <th scope="row"
@@ -240,7 +239,7 @@
                 var ele = $(this);
                 if (confirm("Yakin ingin menghapus item?")) {
                     $.ajax({
-                        url: '{{ route('income.edit.removeBarang') }}',
+                    url: "{{ route('removeBarang', 'daftarBarang') }}",
                         method: "DELETE",
                         data: {
                             _token: '{{ csrf_token() }}',
@@ -257,7 +256,7 @@
                 e.preventDefault();
                 var ele = $(this);
                 $.ajax({
-                    url: '{{ route('income.edit.patchBarang') }}',
+                    url: "{{ route('editBarang','daftarBarang') }}",
                     method: "patch",
                     data: {
                         _token: '{{ csrf_token() }}',

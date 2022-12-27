@@ -24,11 +24,8 @@
                     <x-nav-link :href="route('product.list')" :active="request()->routeIs('*product*')">
                         {{ __('Produk') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('income.list')" :active="request()->routeIs('*income*')">
-                        {{ __('Pemasukan') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('outcome.list')" :active="request()->routeIs('*outcome*')">
-                        {{ __('Pengeluaran') }}
+                    <x-nav-link :href="route('pembukuan.list')" :active="request()->routeIs('*pembukuan*')">
+                        {{ __('Pembukuan') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -94,8 +91,8 @@
             <x-responsive-nav-link :href="route('product.list')" :active="request()->routeIs('*product*')">
                 {{ __('Produk') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('income.list')" :active="request()->routeIs('*income*')">
-                {{ __('Pemasukan') }}
+            <x-responsive-nav-link :href="route('pembukuan.list')" :active="request()->routeIs('*pembukuan*')">
+                {{ __('Pembukuan') }}
             </x-responsive-nav-link>
         </div>
 

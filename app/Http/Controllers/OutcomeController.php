@@ -18,7 +18,7 @@ class OutcomeController extends Controller
         if (!empty($r->input('description'))) {
             $validated['description'] = $r->description;
         }
-        if (session('cart')) {
+        if (session('daftarPengeluaran')) {
             $validated['details'] = $cart;
         }
         $validated['status'] = $r->status;
@@ -29,13 +29,7 @@ class OutcomeController extends Controller
         Entry::create($validated);
 
         session()->forget('daftarPengeluaran');
-        return redirect('/income')->with('Message', 'Berhasil dimasukkan');
-    }
-
-    public function delete($id) {
-        Entry::where('id',$id)->delete();
-
-        return redirect('/income')->with('Message', 'Berhasil dihapus');
+        return redirect('/pembukuan')->with('Message', 'Berhasil dimasukkan');
     }
 
     public function patch(Request $r, $id) {
@@ -47,38 +41,14 @@ class OutcomeController extends Controller
         if (!empty($r->input('description'))) {
             $validated['description'] = $r->description;
         }
-        if (session('cart')) {
+        if (session('editDaftarPengeluaran')) {
             $validated['details'] = $cart;
         }
         $validated['status'] = $r->status;
 
-        outcome::where('id',$id)->update($validated);
+        Entry::where('id',$id)->update($validated);
 
         $r->session()->forget('editDaftarPengeluaran');
-        return redirect('/outcome')->with('Message', 'Berhasil diedit');
-    }
-
-    public function formAddPengeluaran() {
-        $products = Product::get();
-
-        return view('pengeluaran.formTambahPengeluaran', ['products' => $products]);
-    }
-
-    public function formEditPengeluaran($id) {
-        $products = Product::get();
-        $outcome = Entry::where('id',$id)->first();
-
-        if (!session('editDaftarPengeluaran')) {
-            $cart = session()->get('editDaftarPengeluaran',[]);
-
-            $cart = $outcome['details'];
-
-            session()->put('editDaftarPengeluaran', $cart);
-        }
-        
-        return view('pengeluaran.formEditPengeluaran',[
-            'outcome' => $outcome,
-            'products' => $products
-        ]);
+        return redirect('/pembukuan')->with('Message', 'Berhasil diedit');
     }
 }

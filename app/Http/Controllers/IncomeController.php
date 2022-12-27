@@ -3,28 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Product;
 use App\Models\Entry;
-use Carbon\Carbon;
 
 class IncomeController extends Controller
 {
-    public function index() {
-        $data = Entry::orderBy('created_at','DESC')
-                    ->get()
-                    ->groupBy(function ($val){
-                        return Carbon::parse($val->created_at)->format('d M Y');
-                    });
-
-        return view('pemasukan.listPemasukan', compact('data'));
-    }
-
-    public function formAddPemasukan(){
-        $products = Product::get();
-
-        return view('pemasukan.formTambahPemasukan', ['products' => $products]);
-    }
-
     public function store(Request $r){
         $cart = session()->get('cart');
        
@@ -44,26 +26,8 @@ class IncomeController extends Controller
 
         Entry::create($validated);
 
-        session()->forget('cart');
-        return redirect('/income')->with('Message', 'Berhasil dimasukkan');
-    }
-
-    public function formEditPemasukan($id) {
-        $products = Product::get();
-        $income = Entry::where('id',$id)->first();
-
-        if (!session('daftarBarang')) {
-            $cart = session()->get('daftarBarang',[]);
-
-            $cart = $income['details'];
-
-            session()->put('daftarBarang', $cart);
-        }
-        
-        return view('pemasukan.formEditPemasukan',[
-            'income' => $income,
-            'products' => $products
-        ]);
+        $r->session()->forget('cart');
+        return redirect('/pembukuan')->with('Message', 'Berhasil dimasukkan');
     }
 
     public function patch(Request $r, $id){
@@ -84,13 +48,7 @@ class IncomeController extends Controller
 
         Entry::where('id',$id)->update($validated);
 
-        session()->forget('daftarBarang');
-        return redirect('/income')->with('Message', 'Berhasil diedit');
-    }
-
-    public function delete($id) {
-        Entry::where('id',$id)->delete();
-
-        return redirect('/income')->with('Message', 'Berhasil dihapus');
+        $r->session()->forget('daftarBarang');
+        return redirect('/pembukuan')->with('Message', 'Berhasil diedit');
     }
 }

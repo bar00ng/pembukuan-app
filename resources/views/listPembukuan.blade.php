@@ -1,13 +1,13 @@
-@foreach ($outcomes as $day => $outcome_list)
-    @foreach ($outcome_list as $outcome)
+@foreach ($data as $day => $data_list)
+    @foreach ($data_list as $d)
         {{-- Delete Confirmation Modal Box --}}
-        <div id="delete-modal-{{ $outcome->id }}" tabindex="-1"
+        <div id="delete-modal-{{ $d->id }}" tabindex="-1"
             class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
             <div class="relative w-full h-full max-w-md md:h-auto">
                 <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                     <button type="button"
                         class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-                        data-modal-toggle="delete-modal-{{ $outcome->id }}">
+                        data-modal-toggle="delete-modal-{{ $d->id }}">
                         <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd"
@@ -25,17 +25,17 @@
                         <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Yakin ingin menghapus
                             data?
                         </h3>
-                        <form action={{ route('outcome.delete', ['id' => $outcome->id]) }} method="post"
+                        <form action={{ route('pembukuan.delete', ['id' => $d->id]) }} method="post"
                             class="inline-flex items-center">
                             @method('delete')
                             @csrf
-                            <button data-modal-toggle="delete-modal-{{ $outcome->id }}" type="submit"
+                            <button data-modal-toggle="delete-modal-{{ $d->id }}" type="submit"
                                 class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2">
                                 Yes
                             </button>
                         </form>
 
-                        <button data-modal-toggle="delete-modal-{{ $outcome->id }}" type="button"
+                        <button data-modal-toggle="delete-modal-{{ $d->id }}" type="button"
                             class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">No</button>
                     </div>
                 </div>
@@ -46,9 +46,23 @@
 
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Daftar Pengeluaran') }}
-        </h2>
+        <div class="flex items-center justify-between">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('Pembukuan') }}
+            </h2>
+
+            <div class="flex items-center space-x-5">
+                <a href={{ route('pembukuan.tambahPemasukan') }}>
+                    <button type="button"
+                        class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800">+ Pemasukan</button>
+                </a>
+
+                <a href={{ route('pembukuan.tambahPengeluaran') }}>
+                    <button type="button"
+                        class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">+ Pengeluaran</button>
+                </a>
+            </div>
+        </div>
     </x-slot>
 
     @if (session()->has('Message'))
@@ -102,38 +116,43 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($outcomes->isEmpty())
+                                @if ($data->isEmpty())
                                     <tr>
                                         <td colspan="8" class="p-5 italic text-center">Daftar Pengeluaran Kosong</td>
                                     </tr>
                                 @else
-                                    @foreach ($outcomes as $day => $outcome_list)
+                                    @foreach ($data as $day => $data_list)
                                         <tr>
                                             <td colspan="10"
                                                 class="py-4 px-6 text-gray-700 bg-gray-50 uppercase tracking-wide font-semibold">
                                                 {{ $day }}
                                             </td>
                                         </tr>
-                                        @foreach ($outcome_list as $outcome)
+                                        @foreach ($data_list as $d)
                                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                                 <th scope="row"
                                                     class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                    {{ $outcome->description }}
+                                                    {{ $d->description }}
                                                 </th>
                                                 <td class="py-4 px-6 font-bold text-green-500">
-                                                    {{ 'Rp. ' . number_format(0) }}
+                                                    {{ 'Rp. ' . number_format($d->totalPemasukan) }}
                                                 </td>
                                                 <td class="py-4 px-6 font-bold text-red-500">
-                                                    {{ 'Rp. ' . number_format($outcome->totalPengeluaran) }}
+                                                    {{ 'Rp. ' . number_format($d->hargaModal) }}
                                                 </td>
                                                 <td class="py-4 px-6">
-                                                    <a href={{ route('outcome.form.edit', ['id' => $outcome->id]) }}
+                                                    @if ($d->isPemasukan == 1)
+                                                    <a href={{ route('pembukuan.editPemasukan', ['id' => $d->id]) }}
+                                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>    
+                                                    @else
+                                                    <a href={{ route('pembukuan.editPengeluaran', ['id' => $d->id]) }}
                                                         class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                                    @endif
 
                                                     <button
                                                         class="font-medium text-red-600 dark:text-red-500 hover:underline ml-4"
                                                         type="button"
-                                                        data-modal-toggle="delete-modal-{{ $outcome->id }}">Hapus</button>
+                                                        data-modal-toggle="delete-modal-{{ $d->id }}">Hapus</button>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -142,6 +161,7 @@
                             </tbody>
                         </table>
                     </div>
+
                 </div>
             </div>
         </div>
