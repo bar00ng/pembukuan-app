@@ -54,12 +54,14 @@
             <div class="flex items-center space-x-5">
                 <a href={{ route('pembukuan.tambahPemasukan') }}>
                     <button type="button"
-                        class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800">+ Pemasukan</button>
+                        class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800">+
+                        Pemasukan</button>
                 </a>
 
                 <a href={{ route('pembukuan.tambahPengeluaran') }}>
                     <button type="button"
-                        class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">+ Pengeluaran</button>
+                        class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">+
+                        Pengeluaran</button>
                 </a>
             </div>
         </div>
@@ -96,8 +98,8 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
                     <div class="h-1/2 mb-6">
-                    {!! $chart->container() !!}
-                        
+                        {!! $chart->container() !!}
+
                     </div>
 
                     <div class="overflow-x-auto relative sm:rounded-lg">
@@ -131,10 +133,6 @@
                                                 class="py-4 px-6 text-gray-700 bg-gray-50 uppercase tracking-wide font-semibold">
                                                 {{ $day }}
                                             </td>
-                                            <td colspan="10"
-                                                class="py-4 px-6 text-gray-700 bg-gray-50 uppercase tracking-wide font-semibold">
-                                                Keuntungan
-                                            </td>
                                         </tr>
                                         @foreach ($data_list as $d)
                                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -142,11 +140,11 @@
                                                     class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                     <div class="flex flex-col space-y-1">
                                                         @if ($d->description > 1)
-                                                            <p>{{$d->description}}</p>    
+                                                            <p>{{ $d->description }}</p>
                                                         @else
                                                             <p>-</p>
                                                         @endif
-                                                        
+
                                                         @if ($d->isPemasukan > 0)
                                                             <p class="font-light text-green-700">Pemasukan</p>
                                                         @else
@@ -162,11 +160,11 @@
                                                 </td>
                                                 <td class="py-4 px-6">
                                                     @if ($d->isPemasukan == 1)
-                                                    <a href={{ route('pembukuan.editPemasukan', ['id' => $d->id]) }}
-                                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>    
+                                                        <a href={{ route('pembukuan.editPemasukan', ['id' => $d->id]) }}
+                                                            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                                                     @else
-                                                    <a href={{ route('pembukuan.editPengeluaran', ['id' => $d->id]) }}
-                                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                                        <a href={{ route('pembukuan.editPengeluaran', ['id' => $d->id]) }}
+                                                            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                                                     @endif
 
                                                     <button
