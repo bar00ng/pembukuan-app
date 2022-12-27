@@ -36,6 +36,7 @@
     </div>
 
     <script src="/dist/flowbite.js"></script>
+    <script src="/dist/Chart.min.js"></script>
 
     @if (isset($script))
         {{ $script }}

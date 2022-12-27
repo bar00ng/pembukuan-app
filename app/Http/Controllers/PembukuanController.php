@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Entry;
 use Carbon\Carbon;
+use App\Charts\Pembukuan;
 
 class PembukuanController extends Controller
 {
@@ -15,8 +16,23 @@ class PembukuanController extends Controller
             ->groupBy(function ($val) {
                 return Carbon::parse($val->created_at)->format('d M Y');
             });
+
+        $pembukuan = Entry::orderBy('created_at', 'DESC')
+            ->get()
+            ->groupBy(function ($val) {
+                return Carbon::parse($val->created_at)->format('M Y');
+            });
+
+        $months = [];
+        foreach($pembukuan as $month => $values){
+            $months[] = $month;
+        }
+
+        $chart = new Pembukuan;
+
+        $chart->labels($months);
         
-        return view('listPembukuan',compact('data'));
+        return dd($months);
     }
 
     public function delete($id){
