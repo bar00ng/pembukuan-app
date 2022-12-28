@@ -31,7 +31,7 @@ class IncomeController extends Controller
     }
 
     public function patch(Request $r, $id){
-        $cart = session()->get('daftarBarang');
+        $cart = session()->get('daftarBarang'.$id);
        
         $validated = $r->validate([
             'totalPemasukan' => 'required',
@@ -48,7 +48,7 @@ class IncomeController extends Controller
 
         Entry::where('id',$id)->update($validated);
 
-        $r->session()->forget('daftarBarang');
+        $r->session()->forget('daftarBarang'.$id);
         return redirect('/pembukuan')->with('Message', 'Berhasil diedit');
     }
 }

@@ -69,8 +69,13 @@ class PembukuanController extends Controller
 
     public function formEditPemasukan($id) {
         $data = Entry::where('id', $id)->first();
-
         $products = Product::get();
+
+        $session = session()->get('daftarBarang'.$id, []);
+        
+        if(!session('daftarBarang'.$id)) {
+            session()->put('daftarBarang'.$id, $data['details']);
+        }
 
         return view('pemasukan.formEditPemasukan', [
             'data' => $data,
@@ -81,6 +86,12 @@ class PembukuanController extends Controller
     public function formEditPengeluaran($id) {
         $data = Entry::where('id', $id)->first();
         $products = Product::get();
+
+        $session = session()->get('editDaftarPengeluaran'.$id, []);
+        
+        if(!session('editDaftarPengeluaran'.$id)) {
+            session()->put('editDaftarPengeluaran'.$id, $data['details']);
+        }
 
         return view('pengeluaran.formEditPengeluaran', [
             'data' => $data,

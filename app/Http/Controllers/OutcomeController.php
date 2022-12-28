@@ -33,22 +33,22 @@ class OutcomeController extends Controller
     }
 
     public function patch(Request $r, $id) {
-        $cart = session()->get('editDaftarPengeluaran');
+        $cart = session()->get('editDaftarPengeluaran'.$id);
        
         $validated = $r->validate([
-            'totalPengeluaran' => 'required',
+            'hargaModal' => 'required',
         ]);
         if (!empty($r->input('description'))) {
             $validated['description'] = $r->description;
         }
-        if (session('editDaftarPengeluaran')) {
+        if (session('editDaftarPengeluaran'.$id)) {
             $validated['details'] = $cart;
         }
         $validated['status'] = $r->status;
 
         Entry::where('id',$id)->update($validated);
 
-        $r->session()->forget('editDaftarPengeluaran');
+        $r->session()->forget('editDaftarPengeluaran'.$id);
         return redirect('/pembukuan')->with('Message', 'Berhasil diedit');
     }
 }

@@ -53,7 +53,7 @@
                                         {{ $product['productName'] }}
                                     </th>
                                     <td class="py-2 px-4 text-right">
-                                        <a href={{ route('addBarang',['id'=>$product->id, 'sessionName' => 'daftarBarang']) }}>
+                                        <a href={{ route('addBarang',['id'=>$product->id, 'sessionName' => 'daftarBarang'.$data['id']]) }}>
                                             <button type="button"
                                                 class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2  dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 tambah-barang">Add</button>
                                         </a>
@@ -101,9 +101,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (session('daftarBarang'))
-
-                                        @foreach (session('daftarBarang') as $id => $details)
+                                    @if (session('daftarBarang'.$data['id']))
+                                        @foreach (session('daftarBarang'.$data['id']) as $id => $details)
                                             @php
                                                 $total += $details['price'] * $details['quantity'];
                                                 $modal += $details['modal'] * $details['quantity'];
@@ -159,7 +158,7 @@
                                 </span>
                                 <input type="number" name="totalPemasukan" id="total-pemasukan"
                                     class="rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="0" value={{ session('daftarBarang') ? $total : $data['totalPemasukan'] }}>
+                                    placeholder="0" value={{ session('daftarBarang'.$data['id']) ? $total : $data['totalPemasukan'] }}>
                             </div>
                         </div>
                         <div class="mb-6">
@@ -172,7 +171,7 @@
                                 </span>
                                 <input type="number" name="hargaModal" id="harga-modal"
                                     class="rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="0" value={{ session('daftarBarang') ? $modal : $data['hargaModal'] }}>
+                                    placeholder="0" value={{ session('daftarBarang'.$data['id']) ? $modal : $data['hargaModal'] }}>
                             </div>
                         </div>
                         <div class="mb-6">
@@ -185,7 +184,7 @@
                                 </span>
                                 <input type="number" name="keuntungan" id="keuntungan"
                                     class="rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="0" value={{ session('daftarBarang') ? $keuntungan : $data['keuntungan'] }} readonly>
+                                    placeholder="0" value={{ session('daftarBarang'.$data['id']) ? $keuntungan : $data['keuntungan'] }} readonly>
                             </div>
                         </div>
                         <div class="mb-10">
@@ -239,7 +238,7 @@
                 var ele = $(this);
                 if (confirm("Yakin ingin menghapus item?")) {
                     $.ajax({
-                    url: "{{ route('removeBarang', 'daftarBarang') }}",
+                    url: "{{ route('removeBarang', 'daftarBarang'.$data['id']) }}",
                         method: "DELETE",
                         data: {
                             _token: '{{ csrf_token() }}',
@@ -256,7 +255,7 @@
                 e.preventDefault();
                 var ele = $(this);
                 $.ajax({
-                    url: "{{ route('editBarang','daftarBarang') }}",
+                    url: "{{ route('editBarang','daftarBarang'.$data['id']) }}",
                     method: "patch",
                     data: {
                         _token: '{{ csrf_token() }}',
