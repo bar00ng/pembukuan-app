@@ -17,7 +17,11 @@ class DaftarBarangController extends Controller
         $cart = session()->get($sessionName,[]);
 
         if(isset($cart[$id])) {
-            $cart[$id]['quantity']++;
+            if($cart[$id]['quantity'] + 1 <= $product['inStock']){
+                $cart[$id]['quantity']++;
+            } else {
+                return back()->with('Message', 'Stock barang '.$cart[$id]['name'].' hanya tersisa '.$product['inStock']);
+            }
         } else {
             $cart[$id] = [
                 'name' => $product->productName,
@@ -32,12 +36,19 @@ class DaftarBarangController extends Controller
     }
 
     public function updateFromSession(Request $r, $sessionName) {
+        $id = (int)$r->id;
+        $product = Product::findOrFail($id);
+        
         if($r->id && $r->quantity){
             $cart = session()->get($sessionName);
 
-            $cart[$r->id]["quantity"] = $r->quantity;
+            if($r->quantity <= $product['inStock']){
+                $cart[$r->id]["quantity"] = $r->quantity;
+            } else {
+                session()->flash('Message', 'Stock '.$cart[$id]['name'].' hanya tersisa '.$product['inStock']);
+            }
+            
             session()->put($sessionName,$cart);
-            session()->flash('Message', 'Berhasil diubah');
         }
     }
 
@@ -48,7 +59,7 @@ class DaftarBarangController extends Controller
                 unset($cart[$r->id]);
                 session()->put($sessionName, $cart);
             }
-            session()->flash('Message', 'Berhasil dihapus');
+            session()->flash('Success', 'Berhasil dihapus');
         }
     }
 }
