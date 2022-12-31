@@ -72,9 +72,11 @@ class PembukuanController extends Controller
         $products = Product::get();
 
         $session = session()->get('daftarBarang'.$id, []);
+        $tmp_session = session()->get('daftarBarangBefore'.$id, []);
         
         if(!session('daftarBarang'.$id)) {
             session()->put('daftarBarang'.$id, $data['details']);
+            session()->put('daftarBarangBefore'.$id, $data['details']);
         }
 
         return view('pemasukan.formEditPemasukan', [
@@ -88,9 +90,11 @@ class PembukuanController extends Controller
         $products = Product::get();
 
         $session = session()->get('editDaftarPengeluaran'.$id, []);
+        $tmp_session = session()->get('editDaftarPengeluaranBefore'.$id, []);
         
         if(!session('editDaftarPengeluaran'.$id)) {
             session()->put('editDaftarPengeluaran'.$id, $data['details']);
+            session()->put('editDaftarPengeluaranBefore'.$id, $data['details']);
         }
 
         return view('pengeluaran.formEditPengeluaran', [

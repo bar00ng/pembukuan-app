@@ -11,6 +11,7 @@ class OutcomeController extends Controller
 {
     public function store(Request $r) {
         $cart = session()->get('daftarPengeluaran');
+        $productId = array_keys($cart);
        
         $validated = $r->validate([
             'hargaModal' => 'required',
@@ -27,6 +28,13 @@ class OutcomeController extends Controller
         $validated['keuntungan'] = 0;
 
         Entry::create($validated);
+        foreach($productId as $id){
+            $product = Product::where('id', $id)->first();
+
+            Product::where('id',$id)->update([
+                'inStock' => $product['inStock'] + $cart[$id]['quantity']
+            ]);
+        }
 
         session()->forget('daftarPengeluaran');
         return redirect('/pembukuan')->with('Message', 'Berhasil dimasukkan');
@@ -34,6 +42,10 @@ class OutcomeController extends Controller
 
     public function patch(Request $r, $id) {
         $cart = session()->get('editDaftarPengeluaran'.$id);
+        $productId = array_keys($cart);
+
+        $tmp_cart = session()->get('editDaftarPengeluaranBefore'.$id);
+        $tmp_productId = array_keys($tmp_cart);
        
         $validated = $r->validate([
             'hargaModal' => 'required',
@@ -47,8 +59,27 @@ class OutcomeController extends Controller
         $validated['status'] = $r->status;
 
         Entry::where('id',$id)->update($validated);
+        
+        // Restore Stock
+        foreach ($tmp_productId as $id) {
+            $product = Product::where('id', $id)->first();
+
+            Product::where('id',$id)->update([
+                'inStock' => $product['inStock'] - $tmp_cart[$id]['quantity']
+            ]);
+        }
+
+        // Add Stock
+        foreach($productId as $id){
+            $product = Product::where('id', $id)->first();
+
+            Product::where('id',$id)->update([
+                'inStock' => $product['inStock'] + $cart[$id]['quantity']
+            ]);
+        }
 
         $r->session()->forget('editDaftarPengeluaran'.$id);
+        $r->session()->forget('editDaftarPengeluaranBefore'.$id);
         return redirect('/pembukuan')->with('Message', 'Berhasil diedit');
     }
 }
