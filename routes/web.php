@@ -65,8 +65,8 @@ Route::post('/pembukuan/add/pengeluaran',[OutcomeController::class, 'store'])->n
 Route::get('/pembukuan/edit/pengeluaran/{id}',[PembukuanController::class, 'formEditPengeluaran'])->name('pembukuan.editPengeluaran');
 Route::patch('/pembukuan/edit/pengeluaran/{id}', [OutcomeController::class, 'patch'])->name('outcome.patch');
 
-Route::get('/addBarang/{sessionName}/{id}', [DaftarBarangController::class, 'addToSession'])->name('addBarang');
+Route::get('/addBarang/{sessionName}/{id}/{type?}', [DaftarBarangController::class, 'addToSession'])->name('addBarang');
 Route::delete('/deleteBarang/{sessionName}',[DaftarBarangController::class, 'removeFromSession'])->name('removeBarang');
-Route::patch('/editBarang/{sessionName}', [DaftarBarangController::class, 'updateFromSession'])->name('editBarang');
+Route::patch('/editBarang/{sessionName}/{type?}', [DaftarBarangController::class, 'updateFromSession'])->name('editBarang');
 
 require __DIR__.'/auth.php';

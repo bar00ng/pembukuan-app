@@ -11,13 +11,13 @@ class DaftarBarangController extends Controller
     // Form Edit Pemasukan | SESSION_NAME = daftarBarang
     // Form Tambah Pengeluaran | SESSION_NAME = daftarPengeluaran
     // Form Edit Pengeluaran | SESSION_NAME = editDaftarPengeluaran
-    public function addToSession($sessionName, $id) {
+    public function addToSession($sessionName, $id, $type) {
         $product = Product::findOrFail($id);
 
         $cart = session()->get($sessionName,[]);
 
         if(isset($cart[$id])) {
-            if($cart[$id]['quantity'] + 1 <= $product['inStock']){
+            if($cart[$id]['quantity'] + 1 <= $product['inStock'] || $type == 'outcome'){
                 $cart[$id]['quantity']++;
             } else {
                 return back()->with('Message', 'Stock barang '.$cart[$id]['name'].' hanya tersisa '.$product['inStock']);
@@ -35,14 +35,14 @@ class DaftarBarangController extends Controller
         return back();
     }
 
-    public function updateFromSession(Request $r, $sessionName) {
+    public function updateFromSession(Request $r, $sessionName, $type) {
         $id = (int)$r->id;
         $product = Product::findOrFail($id);
         
         if($r->id && $r->quantity){
             $cart = session()->get($sessionName);
 
-            if($r->quantity <= $product['inStock']){
+            if($r->quantity <= $product['inStock'] || $type == 'outcome'){
                 $cart[$r->id]["quantity"] = $r->quantity;
             } else {
                 session()->flash('Message', 'Stock '.$cart[$id]['name'].' hanya tersisa '.$product['inStock']);
