@@ -23,6 +23,9 @@ class PembukuanController extends Controller
                 return Carbon::parse($val->created_at)->format('M Y');
             });
 
+        $money = Entry::select('totalPemasukan', 'hargaModal')
+            ->get();
+
         $months = [];
         $pemasukan = [];
         $pengeluaran = [];
@@ -41,7 +44,8 @@ class PembukuanController extends Controller
         
         return view('listPembukuan',[
             'data' => $data,
-            'chart' => $chart
+            'chart' => $chart,
+            'money' => $money
         ]);
     }
 

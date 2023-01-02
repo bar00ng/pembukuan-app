@@ -1,3 +1,15 @@
+@php
+    $keuntungan = 0;
+    $pengeluaran = 0;
+@endphp
+
+@foreach ($money as $m)
+    @php
+        $keuntungan += $m['totalPemasukan'];
+        $pengeluaran += $m['hargaModal'];
+    @endphp
+@endforeach
+
 @foreach ($data as $day => $data_list)
     @foreach ($data_list as $d)
         {{-- Delete Confirmation Modal Box --}}
@@ -95,6 +107,26 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div
+                class="grid mb-8 border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 md:mb-12 md:grid-cols-2">
+                <figure
+                    class="flex flex-col items-center justify-center p-8 text-center bg-white border-b border-gray-200 rounded-t-lg md:rounded-t-none md:rounded-tl-lg md:border-r dark:bg-gray-800 dark:border-gray-700">
+                    <blockquote class="max-w-2xl mx-auto mb-4 text-gray-500 lg:mb-2 dark:text-gray-400">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white uppercase tracking-wide">Keuntungan
+                        </h3>
+                        <p class="my-4 font-semibold text-2xl text-[#046c4e]">{{ 'Rp. '. number_format($keuntungan) }}</p>
+                    </blockquote>
+                </figure>
+                <figure
+                    class="flex flex-col items-center justify-center p-8 text-center bg-white border-b border-gray-200 rounded-tr-lg dark:bg-gray-800 dark:border-gray-700">
+                    <blockquote class="max-w-2xl mx-auto mb-4 text-gray-500 lg:mb-2 dark:text-gray-400">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white uppercase tracking-wide">Pengeluaran
+                        </h3>
+                        <p class="my-4 font-semibold text-2xl text-[#c81e1e]">{{ 'Rp. '. number_format($pengeluaran) }}</p>
+                    </blockquote>
+                </figure>
+            </div>
+
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
                     <div class="h-1/2 mb-6">
@@ -124,7 +156,8 @@
                             <tbody>
                                 @if ($data->isEmpty())
                                     <tr>
-                                        <td colspan="8" class="p-5 italic text-center">Daftar Pengeluaran Kosong</td>
+                                        <td colspan="8" class="p-5 italic text-center">Daftar Pengeluaran Kosong
+                                        </td>
                                     </tr>
                                 @else
                                     @foreach ($data as $day => $data_list)
